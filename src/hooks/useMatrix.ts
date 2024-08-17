@@ -4,8 +4,12 @@ export const useMatrix = () => {
  const [rows, setRows] = useState<number>(0);
  const [columns, setColumns] = useState<number>(0);
  const [matrix, setMatrix] = useState<(number | string)[][]>([]);
+ const [originalMatrix, setOriginalMatrix] = useState<(number | string)[][]>(
+  []
+ );
  const [inputValue, setInputValue] = useState<string>("");
  const [currentIndex, setCurrentIndex] = useState<number>(0);
+ const [showRotate, setShowRotate] = useState(true);
 
  const handleRowsChange = (e: ChangeEvent<HTMLSelectElement>) => {
   setRows(parseInt(e.target.value));
@@ -13,6 +17,30 @@ export const useMatrix = () => {
 
  const handleColumnsChange = (e: ChangeEvent<HTMLSelectElement>) => {
   setColumns(parseInt(e.target.value));
+ };
+
+ const handleRotateClick = () => {
+  if (showRotate) {
+   setOriginalMatrix([...matrix]);
+
+   const rowsCount = matrix.length;
+   const columnsCount = matrix[0].length;
+
+   const rotatedMatrix = Array.from({ length: columnsCount }, () =>
+    Array(rowsCount).fill("")
+   );
+
+   for (let i = 0; i < rowsCount; i++) {
+    for (let j = 0; j < columnsCount; j++) {
+     rotatedMatrix[columnsCount - 1 - j][i] = matrix[i][j];
+    }
+   }
+
+   setMatrix(rotatedMatrix);
+  } else {
+   setMatrix(originalMatrix);
+  }
+  setShowRotate(!showRotate);
  };
 
  useEffect(() => {
@@ -23,8 +51,9 @@ export const useMatrix = () => {
    Array(columnsCount).fill("")
   );
   setMatrix(newMatrix);
+  setOriginalMatrix(newMatrix);
   setCurrentIndex(0);
-  setInputValue(""); // Reiniciar el input si cambian las filas o columnas
+  setInputValue("");
  }, [rows, columns]);
 
  useEffect(() => {
@@ -34,14 +63,12 @@ export const useMatrix = () => {
   if (inputValue.length <= rowsCount * columnsCount) {
    const newMatrix = [...matrix];
 
-   // Reiniciar la matriz
    newMatrix.forEach((row, rowIndex) =>
     row.forEach((_, colIndex) => {
      newMatrix[rowIndex][colIndex] = "";
     })
    );
 
-   // Llenar la matriz con los valores del input
    inputValue.split("").forEach((num, index) => {
     const rowIndex = Math.floor(index / columnsCount);
     const colIndex = index % columnsCount;
@@ -70,9 +97,11 @@ export const useMatrix = () => {
   columns,
   inputValue,
   matrix,
+  showRotate,
   // methods
   handleRowsChange,
   handleColumnsChange,
   handleInputChange,
+  handleRotateClick,
  };
 };
