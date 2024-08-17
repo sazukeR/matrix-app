@@ -15,21 +15,17 @@ export default function HomePage() {
   handleRotateClick,
  } = useMatrix();
 
- console.log(showRotate);
-
  return (
   <div className="container">
    <div className="controls">
-    <label>
+    <label className={`${!showRotate ? "orange" : ""}`}>
      Filas:
      <select
       disabled={!showRotate}
       value={rows || ""}
       onChange={handleRowsChange}
      >
-      <option value="" disabled>
-       Seleccione filas
-      </option>
+      <option value="" disabled></option>
       {Array.from({ length: 10 }, (_, i) => i + 1).map((number) => (
        <option key={number} value={number}>
         {number}
@@ -38,16 +34,14 @@ export default function HomePage() {
      </select>
     </label>
 
-    <label>
+    <label className={`${!showRotate ? "orange" : ""}`}>
      Columnas:
      <select
       disabled={!showRotate}
       value={columns || ""}
       onChange={handleColumnsChange}
      >
-      <option value="" disabled>
-       Seleccione columnas
-      </option>
+      <option value="" disabled></option>
       {Array.from({ length: 10 }, (_, i) => i + 1).map((number) => (
        <option key={number} value={number}>
         {number}
@@ -65,23 +59,21 @@ export default function HomePage() {
     />
    </div>
 
-   <div>
-    <p>Cantidad de filas seleccionadas: {rows}</p>
-    <p>Cantidad de columnas seleccionadas: {columns}</p>
-   </div>
-
-   <div className="tableContainer">
-    <table className="matrixTable">
-     <tbody>
-      {matrix.map((row, rowIndex) => (
-       <tr key={rowIndex}>
-        {row.map((cell, colIndex) => (
-         <td key={colIndex}>{cell}</td>
-        ))}
-       </tr>
-      ))}
-     </tbody>
-    </table>
+   <div className="boxTable">
+    <div className="tableContainer">
+     <table className="matrixTable">
+      <tbody>
+       {matrix.map((row, rowIndex) => (
+        <tr key={rowIndex}>
+         {row.map((cell, colIndex) => (
+          <td key={colIndex}>{cell}</td>
+         ))}
+        </tr>
+       ))}
+      </tbody>
+     </table>
+     <div className={`rotate-container ${!showRotate ? "rotate" : ""}`}></div>
+    </div>
    </div>
 
    <div className="buttonsContainer">
@@ -91,19 +83,14 @@ export default function HomePage() {
       className="buttonRotate"
       onClick={handleRotateClick}
      >
-      Rotate
+      Girar
      </button>
     ) : (
      <button className="buttonReset" onClick={handleRotateClick}>
-      Reset
+      Restablecer
      </button>
     )}
    </div>
-   {rows > 0 || columns > 0 ? (
-    <></>
-   ) : (
-    <p>Debe seleccionar al menos una fila o columna</p>
-   )}
   </div>
  );
 }
