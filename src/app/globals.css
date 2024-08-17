@@ -1,54 +1,129 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   height: 100vh;
- }
- 
- .controls {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
- }
- 
- .tableContainer {
-  margin-top: 20px;
- }
- 
- .matrixTable {
-  border-collapse: collapse;
- }
- 
- .matrixTable td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-  width: 40px;
-  height: 40px;
- }
- 
- .matrixTable tr:nth-child(even) {
-  background-color: #f2f2f2;
- }
- 
- .matrixTable tr:hover {
-  background-color: #ddd;
- }
+}
 
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.controls label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+  max-width: 250px;
+  font-weight: 600;
+  color: #27ae60;
+}
+
+.controls input,
+.controls select {
+  padding: 0.5rem;
+  max-width: 250px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.controls input {
+  width: 100%;
+}
+
+.controls input:focus,
+.controls select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
+  background-color: #ffffff;
+}
+
+.controls input::placeholder {
+  color: #888;
+  opacity: 0.8;
+}
+
+.controls select {
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.controls select:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+
+.boxTable {
+  display: block;
+  align-content: center;
+  height: 50%;
+}
+
+
+.tableContainer {
+  position: relative;
+}
+
+.matrixTable {
+  border-collapse: collapse;
+}
+
+.matrixTable td {
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+}
+
+.rotate-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  pointer-events: none;
+  transition: transform 0.5s ease;
+}
+
+.rotate-container.rotate {
+  transform: rotate(-180deg);
+}
+
+.matrixTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.matrixTable tr:hover {
+  background-color: #ddd;
+}
 
 .buttonsContainer {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 1rem;
 }
 
 .buttonRotate {
-  background-color: #27ae60; 
+  background-color: #27ae60;
   padding: 10px 20px;
   border-radius: 5px;
   font-size: 16px;
@@ -60,11 +135,11 @@
 }
 
 .buttonRotate:hover {
-  background-color: #219150; 
+  background-color: #219150;
 }
 
 .buttonReset {
-  background-color: #f39c12; 
+  background-color: #f39c12;
   padding: 10px 20px;
   border-radius: 5px;
   font-size: 16px;
@@ -76,5 +151,9 @@
 }
 
 .buttonReset:hover {
-  background-color: #e67e22; 
+  background-color: #e67e22;
+}
+
+label.orange {
+  color: #e67e22;
 }

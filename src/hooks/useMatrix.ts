@@ -9,7 +9,7 @@ export const useMatrix = () => {
  );
  const [inputValue, setInputValue] = useState<string>("");
  const [currentIndex, setCurrentIndex] = useState<number>(0);
- const [showRotate, setShowRotate] = useState(true);
+ const [showRotate, setShowRotate] = useState<boolean>(true);
 
  const handleRowsChange = (e: ChangeEvent<HTMLSelectElement>) => {
   setRows(parseInt(e.target.value));
@@ -42,6 +42,11 @@ export const useMatrix = () => {
   }
   setShowRotate(!showRotate);
  };
+
+ useEffect(() => {
+  setRows(1);
+  setColumns(1);
+ }, []);
 
  useEffect(() => {
   const rowsCount: number = Math.max(rows, 1);
