@@ -48,7 +48,7 @@
 }
 
 .buttonRotate {
-  background-color: #27ae60; /* Verde */
+  background-color: #27ae60; 
   padding: 10px 20px;
   border-radius: 5px;
   font-size: 16px;
@@ -60,11 +60,11 @@
 }
 
 .buttonRotate:hover {
-  background-color: #219150; /* Verde más oscuro */
+  background-color: #219150; 
 }
 
 .buttonReset {
-  background-color: #f39c12; /* Naranja */
+  background-color: #f39c12; 
   padding: 10px 20px;
   border-radius: 5px;
   font-size: 16px;
@@ -76,5 +76,5 @@
 }
 
 .buttonReset:hover {
-  background-color: #e67e22; /* Naranja más oscuro */
+  background-color: #e67e22; 
 }

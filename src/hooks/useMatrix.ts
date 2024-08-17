@@ -21,13 +21,11 @@ export const useMatrix = () => {
 
  const handleRotateClick = () => {
   if (showRotate) {
-   // Guardar la matriz actual como original si no se ha guardado antes
    setOriginalMatrix([...matrix]);
 
    const rowsCount = matrix.length;
    const columnsCount = matrix[0].length;
 
-   // Crear una nueva matriz rotada
    const rotatedMatrix = Array.from({ length: columnsCount }, () =>
     Array(rowsCount).fill("")
    );
@@ -40,7 +38,6 @@ export const useMatrix = () => {
 
    setMatrix(rotatedMatrix);
   } else {
-   // Restaurar la matriz original
    setMatrix(originalMatrix);
   }
   setShowRotate(!showRotate);
@@ -54,9 +51,9 @@ export const useMatrix = () => {
    Array(columnsCount).fill("")
   );
   setMatrix(newMatrix);
-  setOriginalMatrix(newMatrix); // También actualizar la matriz original
+  setOriginalMatrix(newMatrix);
   setCurrentIndex(0);
-  setInputValue(""); // Reiniciar el input si cambian las filas o columnas
+  setInputValue("");
  }, [rows, columns]);
 
  useEffect(() => {
@@ -66,14 +63,12 @@ export const useMatrix = () => {
   if (inputValue.length <= rowsCount * columnsCount) {
    const newMatrix = [...matrix];
 
-   // Reiniciar la matriz
    newMatrix.forEach((row, rowIndex) =>
     row.forEach((_, colIndex) => {
      newMatrix[rowIndex][colIndex] = "";
     })
    );
 
-   // Llenar la matriz con los valores del input
    inputValue.split("").forEach((num, index) => {
     const rowIndex = Math.floor(index / columnsCount);
     const colIndex = index % columnsCount;
@@ -97,13 +92,13 @@ export const useMatrix = () => {
  };
 
  return {
-  // propiedades
+  // properties
   rows,
   columns,
   inputValue,
   matrix,
   showRotate,
-  // métodos
+  // methods
   handleRowsChange,
   handleColumnsChange,
   handleInputChange,
