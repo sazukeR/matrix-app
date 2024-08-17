@@ -4,8 +4,12 @@ export const useMatrix = () => {
  const [rows, setRows] = useState<number>(0);
  const [columns, setColumns] = useState<number>(0);
  const [matrix, setMatrix] = useState<(number | string)[][]>([]);
+ const [originalMatrix, setOriginalMatrix] = useState<(number | string)[][]>(
+  []
+ );
  const [inputValue, setInputValue] = useState<string>("");
  const [currentIndex, setCurrentIndex] = useState<number>(0);
+ const [showRotate, setShowRotate] = useState(true);
 
  const handleRowsChange = (e: ChangeEvent<HTMLSelectElement>) => {
   setRows(parseInt(e.target.value));
@@ -13,6 +17,33 @@ export const useMatrix = () => {
 
  const handleColumnsChange = (e: ChangeEvent<HTMLSelectElement>) => {
   setColumns(parseInt(e.target.value));
+ };
+
+ const handleRotateClick = () => {
+  if (showRotate) {
+   // Guardar la matriz actual como original si no se ha guardado antes
+   setOriginalMatrix([...matrix]);
+
+   const rowsCount = matrix.length;
+   const columnsCount = matrix[0].length;
+
+   // Crear una nueva matriz rotada
+   const rotatedMatrix = Array.from({ length: columnsCount }, () =>
+    Array(rowsCount).fill("")
+   );
+
+   for (let i = 0; i < rowsCount; i++) {
+    for (let j = 0; j < columnsCount; j++) {
+     rotatedMatrix[columnsCount - 1 - j][i] = matrix[i][j];
+    }
+   }
+
+   setMatrix(rotatedMatrix);
+  } else {
+   // Restaurar la matriz original
+   setMatrix(originalMatrix);
+  }
+  setShowRotate(!showRotate);
  };
 
  useEffect(() => {
@@ -23,6 +54,7 @@ export const useMatrix = () => {
    Array(columnsCount).fill("")
   );
   setMatrix(newMatrix);
+  setOriginalMatrix(newMatrix); // También actualizar la matriz original
   setCurrentIndex(0);
   setInputValue(""); // Reiniciar el input si cambian las filas o columnas
  }, [rows, columns]);
@@ -65,14 +97,16 @@ export const useMatrix = () => {
  };
 
  return {
-  // properties
+  // propiedades
   rows,
   columns,
   inputValue,
   matrix,
-  // methods
+  showRotate,
+  // métodos
   handleRowsChange,
   handleColumnsChange,
   handleInputChange,
+  handleRotateClick,
  };
 };

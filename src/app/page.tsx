@@ -7,18 +7,26 @@ export default function HomePage() {
   matrix,
   rows,
   columns,
+  showRotate,
   inputValue,
   handleColumnsChange,
   handleRowsChange,
   handleInputChange,
+  handleRotateClick,
  } = useMatrix();
+
+ console.log(showRotate);
 
  return (
   <div className="container">
    <div className="controls">
     <label>
      Filas:
-     <select value={rows || ""} onChange={handleRowsChange}>
+     <select
+      disabled={!showRotate}
+      value={rows || ""}
+      onChange={handleRowsChange}
+     >
       <option value="" disabled>
        Seleccione filas
       </option>
@@ -32,7 +40,11 @@ export default function HomePage() {
 
     <label>
      Columnas:
-     <select value={columns || ""} onChange={handleColumnsChange}>
+     <select
+      disabled={!showRotate}
+      value={columns || ""}
+      onChange={handleColumnsChange}
+     >
       <option value="" disabled>
        Seleccione columnas
       </option>
@@ -49,7 +61,7 @@ export default function HomePage() {
      value={inputValue}
      onChange={handleInputChange}
      placeholder="Añadir números"
-     disabled={rows === 0 && columns === 0}
+     disabled={(rows === 0 && columns === 0) || !showRotate}
     />
    </div>
 
@@ -71,6 +83,27 @@ export default function HomePage() {
      </tbody>
     </table>
    </div>
+
+   <div className="buttonsContainer">
+    {showRotate ? (
+     <button
+      disabled={rows > 0 || columns > 0 ? false : true}
+      className="buttonRotate"
+      onClick={handleRotateClick}
+     >
+      Rotate
+     </button>
+    ) : (
+     <button className="buttonReset" onClick={handleRotateClick}>
+      Reset
+     </button>
+    )}
+   </div>
+   {rows > 0 || columns > 0 ? (
+    <></>
+   ) : (
+    <p>Debe seleccionar al menos una fila o columna</p>
+   )}
   </div>
  );
 }
