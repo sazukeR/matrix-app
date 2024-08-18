@@ -1,3 +1,4 @@
+
 html,
 body {
   margin: 0;
@@ -110,7 +111,7 @@ body {
   background-color: #f2f2f2;
 }
 
-.matrixTable tr:hover {
+.matrixTable td:hover {
   background-color: #ddd;
 }
 
@@ -154,4 +155,52 @@ body {
 
 label.orange {
   color: #e67e22;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1 {
+  margin-top: 10rem;
+  text-align: center;
+}
+
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #f0f0f0;
+}
+
+.not-found-title {
+  font-size: 6rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #ff6b6b;
+}
+
+.message {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.homeLink {
+  font-size: 1.2rem;
+  color: #0070f3;
+  text-decoration: none;
+  border: 2px solid #0070f3;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.homeLink:hover {
+  background-color: #0070f3;
+  color: white;
 }
