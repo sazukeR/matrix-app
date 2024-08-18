@@ -1,5 +1,5 @@
 import { Matrix } from "@/components";
 
-export default function HomePage() {
+export default function MatrixPage() {
  return <Matrix />;
 }

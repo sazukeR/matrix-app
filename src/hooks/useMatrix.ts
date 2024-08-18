@@ -1,5 +1,4 @@
 import { useEffect, useState, ChangeEvent } from "react";
-
 import {
  generateMatrix,
  rotateMatrix,
@@ -8,19 +7,47 @@ import {
 } from "@/helpers";
 
 export const useMatrix = () => {
- const [rows, setRows] = useState<number>(0);
- const [columns, setColumns] = useState<number>(0);
- const [matrix, setMatrix] = useState<string[][]>([]);
- const [originalMatrix, setOriginalMatrix] = useState<string[][]>([]);
- const [inputValue, setInputValue] = useState<string>("");
- const [showRotate, setShowRotate] = useState<boolean>(true);
+ const [rows, setRows] = useState<number>(() => {
+  const storedRows = localStorage.getItem("rows");
+  return storedRows ? parseInt(storedRows) : 1;
+ });
+
+ const [columns, setColumns] = useState<number>(() => {
+  const storedColumns = localStorage.getItem("columns");
+  return storedColumns ? parseInt(storedColumns) : 1;
+ });
+
+ const [matrix, setMatrix] = useState<string[][]>(() => {
+  const storedMatrix = localStorage.getItem("matrix");
+  return storedMatrix ? JSON.parse(storedMatrix) : generateMatrix(1, 1);
+ });
+
+ const [originalMatrix, setOriginalMatrix] = useState<string[][]>(() => {
+  const storedOriginalMatrix = localStorage.getItem("originalMatrix");
+  return storedOriginalMatrix
+   ? JSON.parse(storedOriginalMatrix)
+   : generateMatrix(1, 1);
+ });
+
+ const [inputValue, setInputValue] = useState<string>(() => {
+  return localStorage.getItem("inputValue") || "";
+ });
+
+ const [showRotate, setShowRotate] = useState<boolean>(() => {
+  const storedShowRotate = localStorage.getItem("showRotate");
+  return storedShowRotate ? JSON.parse(storedShowRotate) : true;
+ });
 
  const handleRowsChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-  setRows(parseInt(e.target.value));
+  const newRows = parseInt(e.target.value);
+  setRows(newRows);
+  setInputValue("");
  };
 
  const handleColumnsChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-  setColumns(parseInt(e.target.value));
+  const newColumns = parseInt(e.target.value);
+  setColumns(newColumns);
+  setInputValue("");
  };
 
  const handleRotate = (): void => {
@@ -43,23 +70,39 @@ export const useMatrix = () => {
  };
 
  useEffect(() => {
-  setRows(1);
-  setColumns(1);
- }, []);
-
- useEffect(() => {
-  const newMatrix = generateMatrix(rows, columns);
-  setMatrix(newMatrix);
-  setOriginalMatrix(newMatrix);
-  setInputValue("");
+  if (matrix.length !== rows || (matrix[0] && matrix[0].length !== columns)) {
+   const newMatrix = generateMatrix(rows, columns);
+   setMatrix(newMatrix);
+   if (showRotate) {
+    setOriginalMatrix(newMatrix);
+   }
+  }
  }, [rows, columns]);
 
  useEffect(() => {
-  if (inputValue.length <= Math.max(rows, 1) * Math.max(columns, 1)) {
+  if (inputValue.length <= rows * columns) {
    const newMatrix = updateMatrix(rows, columns, inputValue);
    setMatrix(newMatrix);
   }
  }, [inputValue]);
+
+ useEffect(() => {
+  localStorage.setItem("rows", rows.toString());
+  localStorage.setItem("columns", columns.toString());
+  localStorage.setItem("matrix", JSON.stringify(matrix));
+  localStorage.setItem("originalMatrix", JSON.stringify(originalMatrix));
+  localStorage.setItem("inputValue", inputValue);
+  localStorage.setItem("showRotate", JSON.stringify(showRotate));
+ }, [rows, columns, matrix, originalMatrix, inputValue, showRotate]);
+
+ useEffect(() => {
+  if (!showRotate) {
+   const storedMatrix = localStorage.getItem("matrix");
+   if (storedMatrix) {
+    setMatrix(JSON.parse(storedMatrix));
+   }
+  }
+ }, [showRotate]);
 
  return {
   // properties
