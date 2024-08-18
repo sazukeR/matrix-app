@@ -1,5 +1,5 @@
 interface Props {
- row: (string | number)[];
+ row: string[];
 }
 export const TableRow = ({ row }: Props) => {
  return (

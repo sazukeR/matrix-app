@@ -1,23 +1,19 @@
 export const updateMatrix = (
  rows: number,
  columns: number,
- inputValue: string,
- matrix: (string | number)[][]
-) => {
- const rowsCount = Math.max(rows, 1);
+ inputValue: string
+): string[][] => {
  const columnsCount = Math.max(columns, 1);
- const newMatrix = [...matrix];
-
- newMatrix.forEach((row, rowIndex) =>
-  row.forEach((_, colIndex) => {
-   newMatrix[rowIndex][colIndex] = "";
-  })
- );
+ const newMatrix = Array(rows)
+  .fill(null)
+  .map(() => Array(columnsCount).fill(""));
 
  inputValue.split("").forEach((num, index) => {
   const rowIndex = Math.floor(index / columnsCount);
   const colIndex = index % columnsCount;
-  newMatrix[rowIndex][colIndex] = parseInt(num);
+  if (rowIndex < rows && colIndex < columnsCount) {
+   newMatrix[rowIndex][colIndex] = num;
+  }
  });
 
  return newMatrix;

@@ -68,13 +68,11 @@ body {
   cursor: not-allowed;
 }
 
-
 .boxTable {
   display: block;
   align-content: center;
   height: 50%;
 }
-
 
 .tableContainer {
   position: relative;
