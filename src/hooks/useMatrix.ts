@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState, ChangeEvent } from "react";
 import {
  generateMatrix,
@@ -9,35 +7,55 @@ import {
 } from "@/helpers";
 
 export const useMatrix = () => {
+ const isClient = typeof window !== "undefined";
+
  const [rows, setRows] = useState<number>(() => {
-  const storedRows = localStorage.getItem("rows");
-  return storedRows ? parseInt(storedRows) : 1;
+  if (isClient) {
+   const storedRows = localStorage.getItem("rows");
+   return storedRows ? parseInt(storedRows) : 1;
+  }
+  return 1; // Valor predeterminado para SSR
  });
 
  const [columns, setColumns] = useState<number>(() => {
-  const storedColumns = localStorage.getItem("columns");
-  return storedColumns ? parseInt(storedColumns) : 1;
+  if (isClient) {
+   const storedColumns = localStorage.getItem("columns");
+   return storedColumns ? parseInt(storedColumns) : 1;
+  }
+  return 1; // Valor predeterminado para SSR
  });
 
  const [matrix, setMatrix] = useState<string[][]>(() => {
-  const storedMatrix = localStorage.getItem("matrix");
-  return storedMatrix ? JSON.parse(storedMatrix) : generateMatrix(1, 1);
+  if (isClient) {
+   const storedMatrix = localStorage.getItem("matrix");
+   return storedMatrix ? JSON.parse(storedMatrix) : generateMatrix(1, 1);
+  }
+  return generateMatrix(1, 1); // Valor predeterminado para SSR
  });
 
  const [originalMatrix, setOriginalMatrix] = useState<string[][]>(() => {
-  const storedOriginalMatrix = localStorage.getItem("originalMatrix");
-  return storedOriginalMatrix
-   ? JSON.parse(storedOriginalMatrix)
-   : generateMatrix(1, 1);
+  if (isClient) {
+   const storedOriginalMatrix = localStorage.getItem("originalMatrix");
+   return storedOriginalMatrix
+    ? JSON.parse(storedOriginalMatrix)
+    : generateMatrix(1, 1);
+  }
+  return generateMatrix(1, 1); // Valor predeterminado para SSR
  });
 
  const [inputValue, setInputValue] = useState<string>(() => {
-  return localStorage.getItem("inputValue") || "";
+  if (isClient) {
+   return localStorage.getItem("inputValue") || "";
+  }
+  return ""; // Valor predeterminado para SSR
  });
 
  const [showRotate, setShowRotate] = useState<boolean>(() => {
-  const storedShowRotate = localStorage.getItem("showRotate");
-  return storedShowRotate ? JSON.parse(storedShowRotate) : true;
+  if (isClient) {
+   const storedShowRotate = localStorage.getItem("showRotate");
+   return storedShowRotate ? JSON.parse(storedShowRotate) : true;
+  }
+  return true; // Valor predeterminado para SSR
  });
 
  const handleRowsChange = (e: ChangeEvent<HTMLSelectElement>): void => {
@@ -89,16 +107,18 @@ export const useMatrix = () => {
  }, [inputValue]);
 
  useEffect(() => {
-  localStorage.setItem("rows", rows.toString());
-  localStorage.setItem("columns", columns.toString());
-  localStorage.setItem("matrix", JSON.stringify(matrix));
-  localStorage.setItem("originalMatrix", JSON.stringify(originalMatrix));
-  localStorage.setItem("inputValue", inputValue);
-  localStorage.setItem("showRotate", JSON.stringify(showRotate));
+  if (isClient) {
+   localStorage.setItem("rows", rows.toString());
+   localStorage.setItem("columns", columns.toString());
+   localStorage.setItem("matrix", JSON.stringify(matrix));
+   localStorage.setItem("originalMatrix", JSON.stringify(originalMatrix));
+   localStorage.setItem("inputValue", inputValue);
+   localStorage.setItem("showRotate", JSON.stringify(showRotate));
+  }
  }, [rows, columns, matrix, originalMatrix, inputValue, showRotate]);
 
  useEffect(() => {
-  if (!showRotate) {
+  if (!showRotate && isClient) {
    const storedMatrix = localStorage.getItem("matrix");
    if (storedMatrix) {
     setMatrix(JSON.parse(storedMatrix));
